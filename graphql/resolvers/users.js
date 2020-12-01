@@ -5,24 +5,35 @@ const User = require("./../../models/User");
 const { SECRET_KEY } = require("./../../config");
 const {
   userLoginFields,
-  userRegisterFields
+  userRegisterFields,
 } = require("./../../Utils/Validators");
+const posts = require("./posts");
 
-const generateToken = user => {
+const generateToken = (user) => {
   return jwt.sign(
     {
       id: user.id,
       email: user.email,
-      username: user.username
+      username: user.username,
     },
     SECRET_KEY,
     {
-      expiresIn: "1h"
+      expiresIn: "1h",
     }
   );
 };
 
 module.exports = {
+  Query: {
+    getAllUsers: async () => {
+      try {
+        const users = await User.find().sort({ createdAt: -1 });
+        return users;
+      } catch (err) {
+        throw new Error(err);
+      }
+    },
+  },
   Mutation: {
     //LOGIN MUTATION
     login: async (parent, args, context, info) => {
@@ -53,7 +64,7 @@ module.exports = {
         return {
           ...user._doc,
           id: user._id,
-          token
+          token,
         };
       } catch (err) {
         throw new Error(err);
@@ -83,7 +94,7 @@ module.exports = {
 
         if (user) {
           throw new UserInputError("Please Choose another email.", {
-            validationErrors: { email: "Please choose Another email." }
+            validationErrors: { email: "Please choose Another email." },
           });
         }
 
@@ -95,7 +106,7 @@ module.exports = {
           email,
           username,
           password,
-          createdAt: new Date().toISOString()
+          createdAt: new Date().toISOString(),
         });
 
         const saveRes = await newUser.save();
@@ -105,12 +116,12 @@ module.exports = {
         return {
           ...saveRes._doc,
           id: saveRes._id,
-          token
+          token,
         };
       } catch (err) {
         // console.log(err);
         throw new Error(err);
       }
-    }
-  }
+    },
+  },
 };

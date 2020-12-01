@@ -10,7 +10,7 @@ const pubsub = new PubSub();
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => ({ req, pubsub })
+  context: ({ req }) => ({ req, pubsub }),
 });
 
 mongoose
@@ -19,7 +19,7 @@ mongoose
     console.log("DB connected.");
     server
       .listen({
-        port: 5001
+        port: 5001,
       })
       .then(() => {
         console.log("Server Running on port 5001");
