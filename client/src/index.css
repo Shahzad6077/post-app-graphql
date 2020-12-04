@@ -1,13 +1,102 @@
+*,
+::after,
+::before {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+.App {
+  padding: 1rem;
+}
+.post-item {
+  border: 2px solid gray;
+}
+
+.post__body {
+  /* display: flex;
+  align-items: center; */
+}
+.post__body * {
+  margin: 0px;
+}
+
+.post__body h4 {
+  margin: 4px;
+}
+.post__body p {
+  font-size: 12px;
+  align-self: flex-end;
+  margin: 4px;
+}
+
+.post__actions {
+  display: flex;
+  border: 1px solid;
+}
+
+.post__actions div {
+  padding: 6px;
+}
+.post__actions button {
+  cursor: pointer;
+}
+.post-liked {
+  background-color: skyblue;
+}
+
+.session form {
+  display: grid;
+  gap: 12px;
+}
+.session form > label > input {
+  margin-left: 1rem;
+}
+.session form > button {
+  width: 60px;
+  margin: auto;
+}
+
+nav {
+  border: 1px solid;
+  max-width: 768px;
+  width: 100%;
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: center;
+  column-gap: 24px;
+
+  background-color: skyblue;
+  padding: 0.5rem;
+
+  margin: 1rem auto;
+}
+
+nav a {
+  padding: 0.5rem;
+  text-decoration: none;
+  color: white;
+}
+nav a.active {
+  background-color: tomato;
+}
+nav a:hover {
+  background-color: rgb(250, 81, 51);
+}
+
+.list {
+  display: grid;
+  row-gap: 12px;
 }

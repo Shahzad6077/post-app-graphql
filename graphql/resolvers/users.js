@@ -85,8 +85,11 @@ module.exports = {
           password,
           confirmPassword
         );
+        console.log(errors, "errors");
         if (!valid) {
-          throw new UserInputError("Please Enter valid data", { errors });
+          throw new UserInputError("Please Enter valid data", {
+            errors,
+          });
         }
         // # Make sure user doesnt already exist
 
@@ -119,8 +122,7 @@ module.exports = {
           token,
         };
       } catch (err) {
-        // console.log(err);
-        throw new Error(err);
+        return err;
       }
     },
   },
