@@ -63,6 +63,7 @@ code {
 }
 .session form > label > input {
   margin-left: 1rem;
+  padding: 4px 12px;
 }
 .session form > button {
   width: 60px;

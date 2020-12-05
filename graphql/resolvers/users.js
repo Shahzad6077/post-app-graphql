@@ -42,22 +42,25 @@ module.exports = {
         // # VALIDATE INPUT FIELDS.
         const { errors, valid } = userLoginFields(username, password);
 
+        console.log(errors, "errors");
         if (!valid) {
-          throw new UserInputError("Fields Not be Empty", errors);
+          return new UserInputError("Fields Not be Empty", {
+            errors,
+          });
         }
 
         const user = await User.findOne({ username });
 
         if (!user) {
           errors.general = "User not found.";
-          throw new UserInputError("User not found.", { errors });
+          return new UserInputError("User not found.", { errors });
         }
 
         const match = await bcrypt.compare(password, user.password);
 
         if (!match) {
           errors.general = "Wrong Credentials.";
-          throw new UserInputError("Wrong Credentials.", { errors });
+          return new UserInputError("Wrong Credentials.", { errors });
         }
 
         const token = generateToken(user);
@@ -67,7 +70,8 @@ module.exports = {
           token,
         };
       } catch (err) {
-        throw new Error(err);
+        // throw new Error(err);
+        return err;
       }
     },
     // REGISTER MUTATION
@@ -87,7 +91,7 @@ module.exports = {
         );
         console.log(errors, "errors");
         if (!valid) {
-          throw new UserInputError("Please Enter valid data", {
+          return new UserInputError("Please Enter valid data", {
             errors,
           });
         }
@@ -96,8 +100,8 @@ module.exports = {
         const user = await User.findOne({ email, username });
 
         if (user) {
-          throw new UserInputError("Please Choose another email.", {
-            validationErrors: { email: "Please choose Another email." },
+          return new UserInputError("Please Choose another email.", {
+            errors: { email: "Please choose Another email." },
           });
         }
 

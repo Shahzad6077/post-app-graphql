@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
+import { useAuthContext } from "../Context/auth";
 
 const Register = () => {
+  const authContext = useAuthContext();
   const [errors, setErrors] = useState({});
   const [fieldsState, setFieldsState] = useState({
     username: "",
@@ -14,6 +16,7 @@ const Register = () => {
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
     update(proxy, result) {
       const { data } = result;
+      authContext.login({ ...data.register, isAuthenticated: true });
     },
     onError(err) {
       console.log(err.graphQLErrors[0].extensions.exception?.errors);

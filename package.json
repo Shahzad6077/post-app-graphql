@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "serve": "node index.js",
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "client": "cd client && npm start"
+
   },
   "keywords": [],
   "author": "",
