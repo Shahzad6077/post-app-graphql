@@ -29,10 +29,10 @@ module.exports = {
 
         return {
           ...post._doc,
-          id: post._id
+          id: post._id,
         };
       } catch (err) {}
-    }
+    },
   },
   Mutation: {
     createPost: async (_, args, context) => {
@@ -41,7 +41,7 @@ module.exports = {
         const user = authCheck(context);
         const { body = "" } = args;
         if (body === "") {
-          throw new ValidationError("Post must have Body.");
+          return new ValidationError("Post must have Body.");
         }
         const createdPost = new Post({
           body,
@@ -49,13 +49,13 @@ module.exports = {
           username: user.username,
           user: user.id,
           comments: [],
-          likes: []
+          likes: [],
         });
         const post = await createdPost.save();
 
         // THIS IS FOR NEW POST SUBSCRIPTION
         context.pubsub.publish("NEW_POST", {
-          newPost: post
+          newPost: post,
         });
 
         return post;
@@ -92,13 +92,13 @@ module.exports = {
       const post = await Post.findById(postId);
 
       if (post) {
-        if (post.likes.find(like => like.username === username)) {
+        if (post.likes.find((like) => like.username === username)) {
           // POST ALREADY LIKE, UNLIKE IT
-          post.likes = post.likes.filter(like => like.username !== username);
+          post.likes = post.likes.filter((like) => like.username !== username);
         } else {
           post.likes.push({
             username,
-            createdAt: new Date().toISOString()
+            createdAt: new Date().toISOString(),
           });
         }
         await post.save();
@@ -106,11 +106,11 @@ module.exports = {
       } else {
         throw new UserInputError("Post Not Found");
       }
-    }
+    },
   },
   Subscription: {
     newPost: {
-      subscribe: (_, __, { pubsub }) => pubsub.asyncIterator("NEW_POST")
-    }
-  }
+      subscribe: (_, __, { pubsub }) => pubsub.asyncIterator("NEW_POST"),
+    },
+  },
 };

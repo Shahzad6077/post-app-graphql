@@ -1,10 +1,15 @@
 import React from "react";
 import { useQuery } from "@apollo/react-hooks";
-import gql from "graphql-tag";
+
+import { FETCH_POST_QUERY } from "./../utils/graphql";
+
 import Post from "../Components/Post";
 import List from "../Components/List";
+import { useAuthContext } from "./../Context/auth";
+import PostForm from "../Components/PostForm";
 
 const Home = () => {
+  const { user } = useAuthContext();
   const { loading, data } = useQuery(FETCH_POST_QUERY);
 
   if (loading) {
@@ -12,6 +17,7 @@ const Home = () => {
   }
   return (
     <div>
+      <div>{user && <PostForm />}</div>
       <List>
         {data?.getPosts.map((obj) => {
           return <Post key={obj.id} {...obj} />;
@@ -20,27 +26,5 @@ const Home = () => {
     </div>
   );
 };
-
-const FETCH_POST_QUERY = gql`
-  {
-    getPosts {
-      id
-      body
-      createdAt
-      username
-      likeCount
-      likes {
-        username
-      }
-      commentCount
-      comments {
-        id
-        username
-        createdAt
-        body
-      }
-    }
-  }
-`;
 
 export default Home;

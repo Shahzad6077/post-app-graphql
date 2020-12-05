@@ -32,6 +32,9 @@ function App(props) {
           </Fragment>
         ) : (
           <Fragment>
+            <Route exact path="/">
+              <Home />
+            </Route>
             <Route exact path="/register">
               <Register />
             </Route>
