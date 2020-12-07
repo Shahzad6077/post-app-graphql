@@ -11,7 +11,6 @@ const Navbar = () => {
         <NavLink exact to="/">
           Posts
         </NavLink>
-        <NavLink to="/login">Login</NavLink>
         <NavLink exact to="/logout" onClick={logout}>
           Logout
         </NavLink>

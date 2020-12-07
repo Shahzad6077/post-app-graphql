@@ -1,6 +1,10 @@
 import React from "react";
+import { useAuthContext } from "./../Context/auth";
+import LikeButton from "./LikeButton";
 
-const Post = ({ body, commentCount, likeCount, username, isLiked = true }) => {
+const Post = ({ id, body, commentCount, likeCount, username, isLiked }) => {
+  const { user } = useAuthContext();
+
   return (
     <div className="post-item">
       <div className="post__body">
@@ -8,16 +12,17 @@ const Post = ({ body, commentCount, likeCount, username, isLiked = true }) => {
         <p>By {username}</p>
       </div>
       <div className="post__actions">
-        <div>
-          <button className={isLiked ? "post-liked" : ""}>
-            {isLiked ? "Unlike" : "Like"}
-          </button>
-          <strong>{likeCount}</strong>
-        </div>
+        <LikeButton post={{ id, username, isLiked, likeCount }} />
         <div>
           <button>Comment</button>
           <strong>{commentCount}</strong>
         </div>
+
+        {user && user.username === username && (
+          <div>
+            <button style={{ backgroundColor: "red" }}>delete</button>
+          </div>
+        )}
       </div>
     </div>
   );

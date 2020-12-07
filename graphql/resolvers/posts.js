@@ -5,8 +5,10 @@ const authCheck = require("./../../Utils/check-auth");
 
 module.exports = {
   Query: {
-    getPosts: async () => {
+    getPosts: async (parent, args, context, info) => {
       try {
+        const authUser = authCheck(context, true);
+        info.authUser = authUser;
         const posts = await Post.find().sort({ createdAt: -1 });
         return posts;
       } catch (err) {
@@ -15,23 +17,28 @@ module.exports = {
     },
     getPost: async (_, args, context, info) => {
       try {
-        const { postId } = args;
+        const authUser = authCheck(context, true);
 
+        const { postId } = args;
         if (postId && postId === "") {
-          throw new ValidationError("Id is required.");
+          return new ValidationError("Id is required.");
         }
 
         const post = await Post.findById(postId);
 
         if (!post) {
-          throw new ValidationError("Post Not found.");
+          return new ValidationError("Post Not found.");
         }
 
         return {
           ...post._doc,
           id: post._id,
+          authUser,
+          ali: "shahzad",
         };
-      } catch (err) {}
+      } catch (err) {
+        return err;
+      }
     },
   },
   Mutation: {

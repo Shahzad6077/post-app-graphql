@@ -23,11 +23,14 @@ code {
 }
 .post-item {
   border: 2px solid gray;
+  max-width: 180px;
+  width: 100%;
 }
 
 .post__body {
   /* display: flex;
   align-items: center; */
+  /* color:rgba(226, 92, 74, 0.281) */
 }
 .post__body * {
   margin: 0px;
@@ -35,6 +38,9 @@ code {
 
 .post__body h4 {
   margin: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .post__body p {
   font-size: 12px;

@@ -6,7 +6,7 @@ const PostForm = () => {
   const [errors, setErrors] = useState({});
   const [bodyText, setBodyText] = useState("");
 
-  const [createdPost, { loading }] = useMutation(CREATE_POST, {
+  const [createdPost, { loading, error }] = useMutation(CREATE_POST, {
     update(proxy, result) {
       const { data } = result;
       console.log(data.createPost);
@@ -22,13 +22,15 @@ const PostForm = () => {
           getPosts: [data.createPost, ...readQueriesData.getPosts],
         },
       });
-      setBodyText("");
     },
     onError(err) {
       console.log(err.graphQLErrors[0].extensions);
       setErrors(err.graphQLErrors[0].extensions.exceptions?.errors);
     },
     variables: { body: bodyText },
+    onCompleted(d) {
+      setBodyText("");
+    },
   });
   function onSubmitPost(e) {
     e.preventDefault();
@@ -44,9 +46,22 @@ const PostForm = () => {
           type="text"
           onChange={({ currentTarget: { value } }) => setBodyText(value)}
           placeholder="Please type body"
+          value={bodyText}
         />
         <button type="submit">Create</button>
       </form>
+      {error && (
+        <div
+          style={{
+            backgroundColor: "rgba(226, 92, 74, 0.281)",
+            padding: "6px 1rem",
+          }}
+        >
+          <h6 style={{ color: "red", textTransform: "uppercase" }}>
+            {error.graphQLErrors[0].message}
+          </h6>
+        </div>
+      )}
     </div>
   );
 };
